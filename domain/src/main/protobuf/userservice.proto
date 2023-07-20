@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package grpc.model;
+
+message User {
+  int32 id = 1;
+  string name = 2;
+}
+
+message ListUserRequest {
+  optional string name = 1;
+}
+
+message ListUserResponse {
+  repeated User users = 1;
+}
+service UserManager {
+  rpc GetUsers (ListUserRequest) returns (ListUserResponse) {}
+}

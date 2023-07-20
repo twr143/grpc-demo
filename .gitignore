@@ -1,0 +1,11 @@
+# Project exclude paths
+/api/target/
+/api/target/scala-2.12/classes/
+/core/target/
+/core/target/scala-2.12/classes/
+/domain/target/resolution-cache/
+/domain/target/scala-2.12/classes/
+/domain/target/streams/
+/project/project/target/
+/project/target/
+/target/
