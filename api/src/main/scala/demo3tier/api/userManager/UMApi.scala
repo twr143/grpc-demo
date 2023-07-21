@@ -19,7 +19,7 @@ class UMApi(h: Http, ums: UserManagerFs2Grpc[IO, Metadata]) extends StrictLoggin
 
   val getUsersK: Kleisli[IO, Unit, GetUsers_OUT] =
     Kleisli { _ =>
-      ums.getUsers(ListUserRequest(), new Metadata()).map(r => GetUsers_OUT(r.users.map(u => fromUser(u))))
+      ums.getUsers(ListUserRequest(), new Metadata()).map(r => GetUsers_OUT(r.users))
     }
   private val getUsersEndpoint = baseEndpoint.get
     .in("users")
@@ -38,11 +38,7 @@ class UMApi(h: Http, ums: UserManagerFs2Grpc[IO, Metadata]) extends StrictLoggin
 object UMApi extends AutoDerivation {
   case class GetUsers_IN(name: String)
 
-  case class User_OUT(id: Int, name: String)
-
-  def fromUser(u: User): User_OUT = User_OUT(u.id, u.name)
-
-  case class GetUsers_OUT(users: Seq[User_OUT])
+  case class GetUsers_OUT(users: Seq[User])
 
   implicit val configuration: Configuration = Configuration.default.withDiscriminator("tp")
 

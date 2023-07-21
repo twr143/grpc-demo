@@ -23,5 +23,5 @@ lazy val domain = (project in file("domain")).
   settings(
     scalapbCodeGeneratorOptions += CodeGeneratorOption.Fs2Grpc,
     scalaVersion := "2.13.10"
-  )
+  ).settings(libraryDependencies ++= domainDeps)
   configs(Test)

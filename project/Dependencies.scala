@@ -118,6 +118,7 @@ object Dependencies {
     "-Wdead-code",
     "-Ymacro-annotations"
   )
+  val domainDeps = Seq("com.thesamet.scalapb" %% "scalapb-runtime" % scalapb.compiler.Version.scalapbVersion % "protobuf")
 
 
 }
