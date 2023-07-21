@@ -12,7 +12,9 @@ import fs2.grpc.syntax.all._
 object Boot extends IOApp with StrictLogging {
   class UserManagerImpl() extends UserManagerFs2Grpc[IO, Metadata] {
     val userList =  Seq(User(1,"Ilya"), User(2,"Malik"))
-    override def getUsers(request: ListUserRequest, ctx: Metadata): IO[ListUserResponse] = IO(ListUserResponse(userList))
+    override def getUsers(request: ListUserRequest, ctx: Metadata): IO[ListUserResponse] = IO{
+      logger.info("returning users: {}", userList)
+      ListUserResponse(userList)}
   }
 
   def userManagerService(): Resource[IO, ServerServiceDefinition] =
