@@ -9,9 +9,8 @@ import demo3tier.api.util.BaseModule
 trait ServiceModule extends BaseModule {
 
   lazy val serviceModel = new ServiceModel
-  lazy val serviceApi = new ServiceApi(http, serviceService, shutdownSignal)
+  lazy val serviceApi = new ServiceApi(http, serviceService)
   lazy val serviceService = new ServiceService(serviceModel)
 
   def http: Http
-  def shutdownSignal: Deferred[IO, Unit]
 }

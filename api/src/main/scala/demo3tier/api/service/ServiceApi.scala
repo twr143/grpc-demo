@@ -15,14 +15,13 @@ import sttp.model.StatusCode
 /**
   * Created by Ilya Volynin on 18.04.2020 at 9:58.
   */
-class ServiceApi(http: Http, serviceService: ServiceService, shutdownFlag: Deferred[IO, Unit]) {
+class ServiceApi(http: Http, serviceService: ServiceService) {
   import http._
   private val UserPath = "user"
   private val SystemPath = "system"
   val shutdownK: Kleisli[IO, Unit, StatusCode] =
     Kleisli { _ =>
       for {
-        _ <- shutdownFlag.complete(())
         r <- IO.delay(StatusCode.Accepted)
       } yield r
     }

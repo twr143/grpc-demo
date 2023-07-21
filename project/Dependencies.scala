@@ -25,7 +25,9 @@ object Dependencies {
     "org.tpolecat" %% "doobie-postgres" % doobieVersion,
     "org.flywaydb" % "flyway-core" % "6.2.1"
   )
-
+  val rpcDependencies = Seq(
+      "io.grpc" % "grpc-netty-shaded" % scalapb.compiler.Version.grpcJavaVersion
+  )
   val httpDependencies = Seq(
     "org.http4s" %% "http4s-dsl" % http4sVersion,
     "org.http4s" %% "http4s-ember-server" % http4sVersion,
@@ -74,7 +76,7 @@ object Dependencies {
 
   val commonDependencies = baseDependencies ++ unitTestingStack ++ loggingDependencies ++ configDependencies
 
-  val apiDependencies: Seq[ModuleID] = commonDependencies ++ httpDependencies ++ jsonDependencies ++ apiDocsDependencies ++ monitoringDependencies
+  val apiDependencies: Seq[ModuleID] = commonDependencies ++ httpDependencies ++ jsonDependencies ++ apiDocsDependencies ++ monitoringDependencies ++ rpcDependencies
 
   val coreDependencies: Seq[ModuleID] = Seq(
     "ch.qos.logback" % "logback-classic" % "1.2.3",

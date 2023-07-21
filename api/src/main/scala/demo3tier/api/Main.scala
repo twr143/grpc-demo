@@ -1,12 +1,15 @@
 package demo3tier.api
 
-import cats.effect.{Deferred, ExitCode, IO, IOApp}
+import cats.effect.std.Dispatcher
+import cats.implicits._
+import cats.effect.{IO, IOApp}
 import com.typesafe.scalalogging.StrictLogging
 import demo3tier.api.infrastructure.CorrelationId
 import demo3tier.api.metrics.Metrics
 import demo3tier.api.config.Config
+import grpc.model.userservice.UserManagerFs2Grpc
+import io.grpc.Metadata
 import sttp.client3.SttpBackend
-import scala.io.StdIn.readLine
 
 
 
@@ -19,24 +22,21 @@ object Main extends IOApp with StrictLogging {
     val initModule = new InitModule {}
     initModule.logConfig()
 
-    initModule.baseSttpBackend
+    (initModule.baseSttpBackend, initModule.managedChannelResource(initModule.config.core.address), Dispatcher.parallel[IO])
+      .mapN((_,_,_))
       .use {
-        case (_baseSttpBackend) =>
-          for {
-            signal <- Deferred[IO, Unit]
-            _ <- {
+        case (_baseSttpBackend, netty, dispatcher) =>
+
               val modules = new MainModule {
 
                 override def baseSttpBackend: SttpBackend[IO, Any] = _baseSttpBackend
 
                 override def config: Config = initModule.config
 
-                override def shutdownSignal: Deferred[IO, Unit] = signal
-
+                override val umc: UserManagerFs2Grpc[IO, Metadata] = UserManagerFs2Grpc.stub[IO](dispatcher,netty)
               }
-              modules.httpApi.resource.useForever.as(ExitCode.Success)
-            }
-          } yield ExitCode.Success
+              modules.httpApi.resource.useForever
+
       }
 
   }

@@ -8,4 +8,5 @@ import demo3tier.api.http.HttpConfig
 case class Config(
     env: Env,
     api: HttpConfig,
+    core: CoreConfig
 )
