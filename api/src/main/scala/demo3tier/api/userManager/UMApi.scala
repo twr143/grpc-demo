@@ -2,7 +2,9 @@ package demo3tier.api.userManager
 
 import cats.data.{Kleisli, NonEmptyList}
 import cats.effect.IO
+import cats.implicits.catsSyntaxApplicativeErrorId
 import com.typesafe.scalalogging.StrictLogging
+import demo3tier.api.Fail
 import demo3tier.api.http.Http
 import demo3tier.api.util.ServerEndpoints
 import grpc.model.userservice.{ListUserRequest, User, UserManagerFs2Grpc}
@@ -19,7 +21,10 @@ class UMApi(h: Http, ums: UserManagerFs2Grpc[IO, Metadata]) extends StrictLoggin
 
   val getUsersK: Kleisli[IO, Unit, GetUsers_OUT] =
     Kleisli { _ =>
-      ums.getUsers(ListUserRequest(), new Metadata()).map(r => GetUsers_OUT(r.users))
+      ums.getUsers(ListUserRequest(), new Metadata()).flatMap {
+        case r if r.error.isDefined => Fail.NotFound(r.error.get.msg).raiseError[IO, GetUsers_OUT]
+        case r => IO(GetUsers_OUT(r.users))
+      }
     }
   private val getUsersEndpoint = baseEndpoint.get
     .in("users")

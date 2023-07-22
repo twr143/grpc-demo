@@ -3,7 +3,7 @@ package demo3tier.core
 import cats.effect.{Deferred, IO, IOApp, Resource}
 import com.typesafe.config.{Config, ConfigFactory}
 import com.typesafe.scalalogging.StrictLogging
-import grpc.model.userservice.{ListUserRequest, ListUserResponse, User, UserManagerFs2Grpc}
+import grpc.model.userservice.{ListUserRequest, ListUserResponse,  User, UserManagerFs2Grpc}
 import io.grpc.netty.shaded.io.grpc.netty.NettyServerBuilder
 import io.grpc.{Metadata, ServerServiceDefinition}
 import fs2.grpc.syntax.all._
