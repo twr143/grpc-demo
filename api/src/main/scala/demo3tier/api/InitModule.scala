@@ -8,7 +8,6 @@ import demo3tier.api.config.ConfigModule
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder
 import sttp.client3.asynchttpclient.fs2.AsyncHttpClientFs2Backend
 import io.grpc.ManagedChannel
-import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder
 import fs2.grpc.syntax.all._
 
 

@@ -1,5 +1,4 @@
 package demo3tier.api.service
-import cats.effect.{Deferred, IO}
 import demo3tier.api.http.Http
 import demo3tier.api.util.BaseModule
 

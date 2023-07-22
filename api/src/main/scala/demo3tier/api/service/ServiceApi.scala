@@ -3,7 +3,7 @@ import java.time.{Instant, LocalDateTime, ZoneOffset}
 import java.time.format.DateTimeFormatter
 import cats.data.Kleisli
 import cats.data.NonEmptyList
-import cats.effect.{Deferred, IO}
+import cats.effect.IO
 import io.circe.{Codec, Encoder}
 import io.circe.generic.AutoDerivation
 import io.circe.generic.extras.Configuration
