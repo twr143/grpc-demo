@@ -13,7 +13,6 @@ import io.circe.generic.extras.Configuration
 import io.grpc.Metadata
 import sttp.tapir.generic.auto._
 
-
 class UMApi(h: Http, ums: UserManagerFs2Grpc[IO, Metadata]) extends StrictLogging {
 
   import UMApi._
@@ -23,7 +22,7 @@ class UMApi(h: Http, ums: UserManagerFs2Grpc[IO, Metadata]) extends StrictLoggin
     Kleisli { _ =>
       ums.getUsers(ListUserRequest(), new Metadata()).flatMap {
         case r if r.error.isDefined => Fail.NotFound(r.error.get.msg).raiseError[IO, GetUsers_OUT]
-        case r => IO(GetUsers_OUT(r.users))
+        case r => IO.pure(GetUsers_OUT(r.users))
       }
     }
   private val getUsersEndpoint = baseEndpoint.get
@@ -35,7 +34,7 @@ class UMApi(h: Http, ums: UserManagerFs2Grpc[IO, Metadata]) extends StrictLoggin
     NonEmptyList
       .of(
         getUsersEndpoint
-      )
+      ).map(_.tag("um"))
 
 
 }

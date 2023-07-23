@@ -1,7 +1,7 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%-10d{mm:ss.S}\(%logger{15}\)%green(%X{debugId}) <!--[%thread]-->%msg%n</pattern>
+            <pattern>%-10d{HH:mm:ss.S}\(%logger{15}\)%green(%X{debugId}) <!--[%thread]-->%msg%n</pattern>
         </encoder>
     </appender>
     <root level="${log.root:-info}">

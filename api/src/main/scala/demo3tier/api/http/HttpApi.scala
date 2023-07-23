@@ -37,7 +37,7 @@ class HttpApi(
     collectorRegistry: CollectorRegistry,
     config: HttpConfig
 ) extends StrictLogging {
-  private val apiContextPath = List("api", "v1")
+  private val apiContextPath = List.empty//List("api", "v1")
   private val endpointsToRoutes = new EndpointsToRoutes(http, apiContextPath)
 
   lazy val mainRoutes: HttpRoutes[IO] =
