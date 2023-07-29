@@ -16,6 +16,7 @@ lazy val api = (project in file("api")).
   settings(docker / dockerfile := dockerFile(
     jarFile = (Compile / packageBin / sbt.Keys.`package`).value,
     classpath = (Compile / managedClasspath).value,
+    internalCp = (Compile / internalDependencyAsJars).value,
     mainclass = (Compile / packageBin / mainClass).value.getOrElse(sys.error("Expected exactly one main class")),
     rsc = (Compile / resourceDirectory).value
   )).
@@ -31,6 +32,7 @@ lazy val core = (project in file("core")).
   settings(docker / dockerfile := dockerFile(
   jarFile = (Compile / packageBin / sbt.Keys.`package`).value,
   classpath = (Compile / managedClasspath).value,
+    internalCp = (Compile / internalDependencyAsJars).value,
   mainclass = (Compile / packageBin / mainClass).value.getOrElse(sys.error("Expected exactly one main class")),
   rsc = (Compile / resourceDirectory).value
 ))
@@ -49,17 +51,17 @@ lazy val root = (project in file("."))
 
 addCommandAlias("ci", ";clean;compile")
 
-def dockerFile(jarFile: File, classpath: Classpath, mainclass: String, rsc: File) = {
+def dockerFile(jarFile: File, classpath: Classpath, internalCp: Classpath, mainclass: String, rsc: File) = {
   val jarTarget = s"/app/${jarFile.getName}"
   // Make a colon separated classpath with the JAR file
-  val classpathString = classpath.files.map("/app/" + _.getName)
+  val classpathString = (classpath.files ++ internalCp.files).map("/app/" + _.getName)
     .mkString(":") + ":" + jarTarget
   val vmArgs = "-XX:+UnlockExperimentalVMOptions -XX:+UseConcMarkSweepGC -XX:+CMSClassUnloadingEnabled -XX:+UseContainerSupport -XX:MinRAMPercentage=50.0 -XX:MaxRAMPercentage=95.0".split(" ")
   new Dockerfile {
     // Base image
     from("openjdk:8-jre-slim")
     // Add all files on the classpath
-    add(classpath.files, "/app/")
+    add(classpath.files ++ internalCp.files, "/app/")
     // Add the JAR file
     add(jarFile, jarTarget)
     // On launch run Java with the classpath and the main class
@@ -70,4 +72,8 @@ def dockerFile(jarFile: File, classpath: Classpath, mainclass: String, rsc: File
   // minikube image ls --format table
   // kubectl apply -f deployment.yaml
   // kubectl exec -it <Pod_Name>  -- /bin/bash  /sh
+
+  // demo:
+  //curl $(minikube service grpc-demo-api --url)/users
+
 }

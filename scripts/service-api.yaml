@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grpc-demo-api
+spec:
+  type: LoadBalancer
+  selector:
+    app: grpc-demo-api
+  ports:
+    - port: 8080
+      targetPort: 8080

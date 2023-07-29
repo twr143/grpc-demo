@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-demo-api
+  labels:
+    app: grpc-demo-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grpc-demo-api
+  template:
+    metadata:
+      labels:
+        app: grpc-demo-api
+    spec:
+      containers:
+        - name: grpc-demo-api
+          image: org.iv/grpc-demo-api:latest
+          imagePullPolicy: Never
+          env:
+            - name: ENV_MODE
+              value: QA
+            - name: PORT
+              value: "8080"
+            - name: CORE_ADDRESS
+              value: grpc-demo-core:8080
