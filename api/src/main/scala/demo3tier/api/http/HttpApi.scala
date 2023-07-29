@@ -18,6 +18,8 @@ import sttp.tapir.server.ServerEndpoint
 import demo3tier.api.infrastructure.CorrelationId
 import demo3tier.api.util.Http4sCorrelationMiddleware._
 
+import scala.concurrent.duration.DurationInt
+
 
 /**
   * Interprets the endpoint descriptions (defined using tapir) as http4s routes, adding CORS, metrics, api docs
@@ -69,6 +71,7 @@ class HttpApi(
           .default[IO]
           .withHost(Host.fromString(config.host).get)
           .withPort(Port.fromString(config.port.toString).get)
+          .withShutdownTimeout(2.seconds)
           .withHttpApp(app)
           .build
 

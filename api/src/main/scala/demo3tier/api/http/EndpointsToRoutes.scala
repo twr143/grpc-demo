@@ -60,7 +60,7 @@ class EndpointsToRoutes(http: Http, apiContextPath: List[String]) {
     */
   def toDocsRoutes(es: ServerEndpoints): HttpRoutes[IO] = {
     val swaggerEndpoints =
-      SwaggerInterpreter(basePrefix = apiContextPath, customiseDocsModel = _.addServer(s"/${apiContextPath.mkString("/")}"))
+      SwaggerInterpreter()
         .fromServerEndpoints(es.toList, "My App", "1.0")
     Http4sServerInterpreter[IO]().toRoutes(swaggerEndpoints)
   }

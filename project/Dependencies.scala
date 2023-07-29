@@ -10,12 +10,12 @@ import sbtbuildinfo.{BuildInfoKey, BuildInfoOption}
 object Dependencies {
   
   val doobieVersion = "1.0.0-RC1"
-  val http4sVersion = "0.23.18"
+  val http4sVersion = "0.23.23"
   val circeVersion = "0.14.1"
   val tsecVersion = "0.4.0"
-  val sttpVersion = "3.3.18"
+  val sttpVersion = "3.5.2"
   val prometheusVersion = "0.14.1"
-  val tapirVersion = "0.20.0-M3"
+  val tapirVersion = "0.20.2"
   val fs2Version = "2.5.10"
   val catsEffectVersion = "3.3.14"
 

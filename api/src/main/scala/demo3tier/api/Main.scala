@@ -2,7 +2,7 @@ package demo3tier.api
 
 import cats.effect.std.Dispatcher
 import cats.implicits._
-import cats.effect.{IO, IOApp}
+import cats.effect.{ExitCode, IO, IOApp}
 import com.typesafe.scalalogging.StrictLogging
 import demo3tier.api.infrastructure.CorrelationId
 import demo3tier.api.metrics.Metrics
