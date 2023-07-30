@@ -15,7 +15,7 @@ import sttp.model.StatusCode
 /**
   * Created by Ilya Volynin on 18.04.2020 at 9:58.
   */
-class ServiceApi(http: Http, serviceService: ServiceService) {
+class ServiceApi(http: Http) {
   import http._
   private val UserPath = "user"
   private val SystemPath = "system"

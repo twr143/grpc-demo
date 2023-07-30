@@ -18,7 +18,7 @@ import sttp.tapir.server.ServerEndpoint
 import demo3tier.api.infrastructure.CorrelationId
 import demo3tier.api.util.Http4sCorrelationMiddleware._
 
-import scala.concurrent.duration.DurationInt
+import scala.concurrent.duration._
 
 
 /**
@@ -40,7 +40,7 @@ class HttpApi(
     config: HttpConfig
 ) extends StrictLogging {
   private val apiContextPath = List.empty//List("api", "v1")
-  private val endpointsToRoutes = new EndpointsToRoutes(http, apiContextPath)
+  private val endpointsToRoutes = new EndpointsToRoutes(http)
 
   lazy val mainRoutes: HttpRoutes[IO] =
     Http4sCorrelationMiddleware(CorrelationId).withCorrelationId(loggingMiddleware(endpointsToRoutes(endpoints concatNel serviceEndpoints)))
@@ -71,7 +71,7 @@ class HttpApi(
           .default[IO]
           .withHost(Host.fromString(config.host).get)
           .withPort(Port.fromString(config.port.toString).get)
-          .withShutdownTimeout(2.seconds)
+          .withShutdownTimeout(0.1.seconds)
           .withHttpApp(app)
           .build
 

@@ -8,7 +8,7 @@ import demo3tier.api.util.BaseModule
 trait ServiceModule extends BaseModule {
 
   lazy val serviceModel = new ServiceModel
-  lazy val serviceApi = new ServiceApi(http, serviceService)
+  lazy val serviceApi = new ServiceApi(http)
   lazy val serviceService = new ServiceService(serviceModel)
 
   def http: Http
